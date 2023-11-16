@@ -1,0 +1,14 @@
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * API {{apiName}}
+   * Get list
+   * @param user: user authenticated
+   * @param pager: {limit: number, offset?: number, page?: number, isTakeAll?: boolean}
+   * @returns  {data, paging}
+   */
+  @Query('{{apiName}}')
+  async {{apiName}}(@GqlUser() user: UsersEntity, @Args('Pager') pager) {
+    const data = await this.{{name}}Service.{{apiName}}(pager);
+    return this.response(data);
+  }

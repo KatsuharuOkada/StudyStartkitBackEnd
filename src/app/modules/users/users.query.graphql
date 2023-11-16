@@ -1,0 +1,17 @@
+type Query {
+  getUserInformation(userId: Int): UserQueryResponse
+}
+
+"User information"
+type UserInformation {
+  userId: Int
+  userName: String
+  email: String
+  gender: Int
+}
+
+type UserQueryResponse {
+  statusCode: Int
+  message: String
+  data: UserInformation
+}

@@ -1,0 +1,19 @@
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): MutationResponse
+}
+
+input CreateUserInput {
+  email: String!
+  fullname: String!
+  gender: GENDER!
+}
+
+type MutationResponse {
+  statusCode: Int
+  message: String
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+}

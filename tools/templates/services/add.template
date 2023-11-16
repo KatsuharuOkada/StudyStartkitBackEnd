@@ -1,0 +1,23 @@
+  {{transaction}}
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * Method {{apiName}}
+   * Add new record
+   * @param owner: UsersEntity
+   * @param params: {url: string, comment:string}
+   * @returns new inserted record
+   */
+  async {{apiName}}(owner: UsersEntity, params) {
+    try {
+      const {{objEntity}} = new {{upperFirstLetterName}}Entity(params);
+      {{othersUpdateEntity}}
+      const {{result}} = this.{{lowerCaseName}}Repository.create({{objEntity}});
+      let response = await this.{{lowerCaseName}}Repository.save({{result}});
+      {{otherSaveInfo}}
+
+      return response;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }

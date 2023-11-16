@@ -1,0 +1,20 @@
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * Method: {{apiName}}
+   * Get detail by id
+   * @param id: number
+   * @returns detail info
+   */
+  async {{apiName}}(id: number) {
+    const queryBuilder = this.{{lowerCaseName}}Repository
+      .createQueryBuilder(this.entityAlias)
+      {{importJoin}}
+      {{importSelect}}
+      .where(`${this.entityAlias}.id = :id`, { id });
+    const {{result}} = await queryBuilder.getOne();
+    if (_.isEmpty({{result}})) {
+      throw new BadRequestException('{{result}} not found.');
+    }
+    return {{result}};
+  }

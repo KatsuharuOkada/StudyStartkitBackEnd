@@ -1,0 +1,14 @@
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * API {{apiName}}
+   * Get detail by id
+   * @param user: user authenticated
+   * @param id: number
+   * @returns detail info
+   */
+  @Query('{{apiName}}')
+  async {{apiName}}(@GqlUser() user: UsersEntity, @Args('id') id: number) {
+    const data = await this.{{name}}Service.{{apiName}}(id);
+    return this.response(data);
+  }

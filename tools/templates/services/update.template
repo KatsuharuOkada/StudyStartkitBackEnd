@@ -1,0 +1,30 @@
+  {{transaction}}
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * Method {{apiName}}
+   * Update record by id
+   * @param id: number
+   * @param params: {comment:string}
+   * @param user: UsersEntity
+   * @returns updated record
+   */
+  async {{apiName}}(id: number, params, user: UsersEntity) {
+    const {{result}} = await this.{{lowerCaseName}}Repository.findOne({
+      where: { id },
+    });
+    if (_.isEmpty({{result}})) {
+      throw new BadRequestException('{{result}} not found.');
+    }
+    for (const key in params) {
+      if (params[key]) {
+        {{result}}[key] = params[key];
+      }
+    }
+    // Update info
+    let response = await this.{{lowerCaseName}}Repository.save({{result}});
+    {{otherTableDeleteInfo}}
+    {{otherSaveInfo}}
+
+    return response;
+  }

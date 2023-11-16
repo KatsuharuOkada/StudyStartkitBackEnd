@@ -1,0 +1,3 @@
+dist/**
+ormconfig.js
+graphiql-explorer-static/*

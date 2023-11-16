@@ -1,0 +1,26 @@
+type Query {
+  getUserIncentives(userId: String): UserIncentiveResponse
+}
+
+type Mutation {
+  useIncentive(userIncentiveId: Int): UserIncentiveMutationResponse
+}
+
+type UserIncentiveResponse {
+  statusCode: Int
+  data: [UserIncentive]
+  error: Error
+}
+
+type UserIncentive {
+  id: Int!
+  stampCount: Int!
+  isUsed: Boolean!
+  expiredAt: DateTime
+}
+
+type UserIncentiveMutationResponse {
+  statusCode: Int!
+  data: Boolean
+  error: Error
+}

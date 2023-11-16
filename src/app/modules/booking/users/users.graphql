@@ -1,0 +1,38 @@
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): MutationResponse
+}
+type Query {
+  getUserInformation(userId: Int): UserQueryResponse
+}
+
+input CreateUserInput {
+  email: String!
+  fullname: String!
+  gender: GENDER!
+  password: String!
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+}
+
+"User information"
+type UserInformation {
+  userId: Int
+  userName: String
+  email: String
+  gender: String
+}
+
+type UserQueryResponse {
+  statusCode: Int
+  message: String
+  data: UserInformation
+  error: Error
+}
+type MutationResponse {
+  statusCode: Int!
+  data: String
+  error: Error
+}

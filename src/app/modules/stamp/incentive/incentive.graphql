@@ -1,0 +1,15 @@
+type Query {
+  getIncentives: IncentivesQueryResponse!
+}
+
+type Incentive {
+  id: Int!
+  stampCount: Int!
+  description: String!
+}
+
+type IncentivesQueryResponse {
+  statusCode: Int!
+  data: [Incentive!]
+  error: Error
+}

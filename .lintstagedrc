@@ -1,0 +1,6 @@
+{
+  "*.ts": [
+    "yarn run format",
+    "yarn run lint"
+  ]
+}

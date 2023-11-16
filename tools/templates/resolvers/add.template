@@ -1,0 +1,14 @@
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * API {{apiName}}
+   * Add new record
+   * @param user: user authenticated
+   * @param params
+   * @returns new inserted record
+   */
+  @Mutation('{{apiName}}')
+  async {{apiName}}(@GqlUser() user: UsersEntity, @Args('params') params) {
+    const data = await this.{{name}}Service.{{apiName}}(user, params);
+    return this.response(data);
+  }

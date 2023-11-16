@@ -1,0 +1,162 @@
+version: 2
+
+jobs:
+  test:
+    machine:
+      image: ubuntu-1604:201903-01
+    # Remove line below if you want to use feature docker layer cache.
+    # you must upgrade premium circleCI to use this feature.
+    #
+    # docker_layer_caching: true
+    #
+    working_directory: ~/template-service
+    steps:
+      - checkout
+      - run:
+          name: Setup Nodejs and Yarn
+          command: |
+            # Install Nodejs
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+            source ~/.bash_profile
+            nvm install v13.0.1
+            nvm alias default  v13.0.1
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+            # Install Yarn
+            npm install -g yarn@1.21.1
+            sudo apt-get install netcat-openbsd -y
+      - restore_cache:
+          key: dep-{{ checksum "yarn.lock" }}
+      - run:
+          name: yarn
+          command: yarn
+          working_directory: ./
+      - save_cache:
+          key: dep-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: setting environemnt variables
+          command: |
+            export MYIP=`ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}'`
+            echo "export MYIP=$MYIP" >> $BASH_ENV
+            echo "export NODE_ENV=local" >> $BASH_ENV
+            echo "export DB_HOST=$MYIP" >> $BASH_ENV
+            echo "export RDS_LOCAL_HOST=$MYIP" >> $BASH_ENV
+            echo "export RDS_DATABASE=db_template" >> $BASH_ENV
+            echo "export RDS_USERNAME=devUser" >> $BASH_ENV
+            echo "export RDS_PASSWORD=123456" >> $BASH_ENV
+            echo "export RDS_ROOT_PASSWORD=admin$123" >> $BASH_ENV
+            echo "export NODE_OPTIONS=--max_old_space_size=4096" >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: launch docker container
+          working_directory: ./
+          command: |
+            cp .env.example .env
+            yarn run start-local-docker -d
+      - run:
+          name: wait for connecting
+          # TODO: fixing...
+          command: |
+            # echo "mysql"
+            # timeout 60s bash -c "while ! nc -c $MYIP 3306 ; do sleep 1 ; done"
+            # echo "app service"
+            # timeout 60s bash -c "while ! nc -c  $MYIP 3000 ; do sleep 1 ; done"
+            sleep 5
+      # - run:
+      #     name: migrate mysql table
+      #     working_directory: ./
+      #     command: |
+      #       yarn run local-migrate:latest
+      - run:
+          name: test e2e
+          working_directory: ./
+          command: yarn run test:e2e
+          no_output_timeout: 30m
+  deploy:
+    docker:
+      - image: circleci/node:11.4.0
+    working_directory: ~/template-service
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: npm install
+      - run:
+          name: Install awscli
+          command: |
+            sudo apt-get -y update
+            sudo apt-get -y install awscli
+            aws --version
+      - run:
+          name: Environment Settings
+          command: |
+            touch .env
+            if [ $CIRCLE_BRANCH = 'develop' ]; then
+              cp env/.env_develop .env
+              printf "\nAWS_S3_BUCKET_NAME=$DEV_AWS_S3_BUCKET_NAME" >> .env;
+            elif [ $CIRCLE_BRANCH = 'staging' ]; then
+              cp env/.env_staging .env
+              printf "\nAWS_S3_BUCKET_NAME=$STG_AWS_S3_BUCKET_NAME" >> .env;
+            elif [ $CIRCLE_BRANCH = 'production' ]; then
+              cp env/.env_production .env
+              printf "\nAWS_S3_BUCKET_NAME=$PRD_AWS_S3_BUCKET_NAME" >> .env;
+            fi
+
+            printf "\nAWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env;
+            printf "\nAWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env;
+            printf "\nAWS_REGION=$AWS_ECS_REGION" >> .env;
+            printf "\n" >> .env;
+            cat .env;
+      - run:
+          name: Create AWS credentials manually
+          command: |
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set region $AWS_ECS_REGION
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo mv /tmp/docker/* /usr/bin
+            docker --version
+      - run:
+          name: Deploy to ECS
+          command: |
+            chmod 777 ./deploy/ecs-deploy
+            $(aws ecr get-login --region $AWS_ECS_REGION)
+            if [ $CIRCLE_BRANCH = 'develop' ]; then                
+                docker build -t node-templete-dev .
+                docker tag node-templete-dev:latest $DEV_AWS_ECR_URI:latest
+                docker push $DEV_AWS_ECR_URI:latest
+                sh ./deploy/dev-deploy.sh
+            elif [ $CIRCLE_BRANCH = 'staging' ]; then
+                docker build -t node-templete-stg .
+                docker tag node-templete-stg:latest $STG_AWS_ECR_URI:latest
+                docker push $STG_AWS_ECR_URI:latest
+                sh ./deploy/stg-deploy.sh
+            elif [ $CIRCLE_BRANCH = 'production' ]; then
+                docker build -t node-templete-prd .
+                docker tag node-templete-prd:latest $PRD_AWS_ECR_URI:latest
+                docker push $prd_AWS_ECR_URI:latest
+                sh ./deploy/prd-deploy.sh
+            fi
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+  build-deploy:
+    jobs:
+      - test
+      - deploy:
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - production

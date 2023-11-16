@@ -1,0 +1,30 @@
+scalar JSON
+
+type Error {
+  errorCode: String!
+  message: String
+  details: [ErrorDetail]!
+}
+
+type ErrorDetail {
+  message: String
+  type: String
+  key: String
+  value: String
+}
+
+input Pager {
+  take: Int!
+  skip: Int!
+  isTakeAll: Boolean
+}
+
+type Paging {
+  take: Int!
+  skip: Int!
+  total: Int!
+  isNext: Boolean
+  isPrev: Boolean
+  orders: JSON
+  filters: JSON
+}

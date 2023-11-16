@@ -1,0 +1,348 @@
+{
+ "Authorization":"Bearer "
+}
+
+- alias entity format: alias name; enity class name; enity path(non extentions name: .ts),
+- other packages format: packages class name; package path(non extentions name: .ts),
+
+
+1. addProject:
+
+? What is your name?
+-> ThanhLD
+
+? What is your folder name
+-> projects
+
+? Do you want to import other packages
+to add project, you need some informations bellow: projectName, projectCode, projectDescription, skills
+so we need access to pakages relate to ProjectsSkills, Skills and users for verify authenticate
+
+-> UsersService;../users/users.service,UsersRepository;../../repositories/users.repository,ProjectsSkillsRepository;../../repositories/projects-skills.repository,SkillsRepository;../../repositories/skills.repository
+
+? What is your Api name?
+-> addProject
+
+? Do you need check authentication for this (yes/no)?
+-> yes
+
+? What is your alias for other entity?
+using alias for access entity to query easely
+-> userAlias;UsersEntity;../../entities/users.entity,projectsSkillAlias;ProjectsSkillsEntity;../../entities/projects-skills.entity,skillAlias;SkillsEntity;../../entities/skills.entity
+
+? What is your input param?
+define what you need to input and data type to add project. you must follow by graphql format
+-> CreateProjectDto->projectName: String!;projectCode: String!;projectDescription: String;startDate: Date;endDate: Date;skills: [Int]!
+
+? What is your output param?
+define expect output of your api: what is field? what is data type of field
+-> ProjectResponse->statusCode: Int!;message: String;data: ProjectDto;error: String,ProjectDto->id: Int;projectName: String;projectCode: String;projectDescription: String;startDate:Date;endDate:Date;skills: [SkillsDto],SkillsDto->id: Int!;skillName: String!;language: String
+
+? What is your other values for updating (except for params)?
+-> 
+
+? What is your other save info (save to other tables by params)?
+-> skills:array:id;skillsRepository;projectsSkillsRepository;ProjectsSkillsEntity;project:skill
+
+
+mutation addProject($params: CreateProjectDto){
+  addProject(params:$params){
+    statusCode
+    message
+    data {
+      id
+      projectName
+      projectCode
+      projectDescription
+      startDate
+      endDate
+      skills{
+        id
+        skillName
+        language
+      }
+    }
+  }
+}
+
+
+{
+  "params": {
+    "projectName": "project 1",
+    "projectCode": "PJ-01",
+    "projectDescription": "project 1",
+    "startDate":"2022-12-02",
+    "endDate":"2023-12:01",
+    "skills": [1,2,3]
+  }
+}
+
+{
+  "params": {
+    "projectName": "project 2",
+    "projectCode": "PJ-02",
+    "projectDescription": "project 2",
+     "startDate":"2022-12-02",
+    "endDate":"2023-12:01",
+    "skills": [2,3]
+  }
+}
+
+{
+  "params": {
+    "projectName": "project 3",
+    "projectCode": "PJ-03",
+    "projectDescription": "project 4",
+     "startDate":"2022-12-02",
+    "endDate":"2023-12:01",
+    "skills": [1,3]
+  }
+}
+
+---------------------------------
+
+2. Get one project
+
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name?
+-> projects
+
+? Do you want to import other packages?
+-> UsersService;../users/users.service,UsersRepository;../../repositories/users.repository,ProjectsSkillsRepository;../../repositories/projects-skills.repository,SkillsRepository;../../repositories/skills.repository
+
+? What is your Api name?
+-> getProject
+
+? Do you need check authentication for this (yes/no)? 
+-> yes
+
+? What is your alias for other entity? 
+-> userAlias;UsersEntity;../../entities/users.entity,projectsSkillAlias;ProjectsSkillsEntity;../../entities/projects-skills.entity,skillAlias;SkillsEntity;../../entities/skills.entity
+
+? What is joinTable and condition join if no please ignore it?
+-> leftJoin;projectSkills;projectsSkillAlias,leftJoin;skills;SkillsEntity;skillAlias;projectsSkillAlias-skill_id;skillAlias-id
+
+? What is column names that you want to select?
+-> id,projectCode,projectName,projectDescription,startDate,endDate
+
+? What is column names for alias that you want to select? 
+-> skillAlias.id,skillAlias.skillName,skillAlias.language
+
+? What is your output param?
+->  ProjectResponse->statusCode: Int!;message: String;data: ProjectDto;error: String,ProjectDto->id: Int;projectName: String;projectCode: String;projectDescription: String;startDate:Date;endDate:Date;skills: [SkillsDto],SkillsDto->id: Int!;skillName: String!;language: String
+? Do you want to skip override module (yes/no)? 
+-> no
+
+
+{
+  "id":1
+}
+
+
+
+query getProject($id: Int!){
+  result: getProject(id: $id){
+    statusCode
+    message
+    data
+    {
+      id
+      projectName
+      projectCode
+      projectDescription
+      skills {
+        id
+        skillName
+        language
+      }
+    }
+    error
+  }
+}
+
+
+
+---------------------------
+3. Update projects
+
+? What is your name?
+-> ThanhLD
+
+? What is your folder name?
+-> projects
+
+? Do you want to import other packages?
+->  UsersService;../users/users.service,UsersRepository;../../repositories/users.repository,ProjectsSkillsRepository;../../repositories/projects-skills.repository,SkillsRepository;../../repositories/skills.repository
+
+? What is your Api name?
+-> updateProject
+
+? Do you need check authentication for this (yes/no)? 
+-> yes
+
+? What is your alias for other entity?
+->  userAlias;UsersEntity;../../entities/users.entity,projectsSkillAlias;ProjectsSkillsEntity;../../entities/projects-skills.entity,skillAlias;SkillsEntity;../../entities/skills.entity
+
+? What is your input param? 
+-> UpdateProjectDto->projectDescription: String;startDate:Date;endDate:Date;skills: [Int]
+
+? What is your output param?
+->  ProjectResponse->statusCode: Int!;message: String;data: ProjectDto;error: String,ProjectDto->id: Int;projectName: String;projectCode: String;projectDescription: String;startDate:Date;endDate:Date;skills: [SkillsDto],SkillsDto->id: Int!;skillName: String!;language: String
+
+? What is your other save info (save to other tables by params)? 
+-> skills:array:id;skillsRepository;projectsSkillsRepository;ProjectsSkillsEntity;project:skill
+
+? What is your delete info for other table?
+-> projectsSkillsRepository-{project:{id: id}}
+
+? Do you want to skip override module (yes/no)? 
+-> no
+
+
+
+{
+  "id": 1,
+  "params": {
+    "projectDescription": "new project 1",
+    "skills": [1]
+  }
+}
+
+
+mutation updateProject($id:Int!, $params:UpdateProjectDto){
+  updateProject(id:$id, params:$params){
+    statusCode
+    message
+    data {
+      id
+      projectName
+      projectCode
+      projectDescription
+      skills {
+        id
+        skillName
+        language
+      }
+    }
+    error
+  }
+}
+
+------------------------
+
+4. Get project list
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name?
+-> projects
+
+? Do you want to import other packages for generating modules and services?
+-> UsersService;../users/users.service,UsersRepository;../../repositories/users.repository,ProjectsSkillsRepository;../../repositories/projects-skills.repository,SkillsRepository;../../repositories/skills.repository
+
+? What is your Api name?
+-> getProjects
+
+? Do you need check authentication for this (yes/no)?
+-> yes
+
+? What is your alias for other entity? 
+-> userAlias;UsersEntity;../../entities/users.entity,projectsSkillAlias;ProjectsSkillsEntity;../../entities/projects-skills.entity,skillAlias;SkillsEntity;../../entities/skills.entity
+
+? What is joinTable and condition join if no please ignore it.?
+->  leftJoin;projectSkills;projectsSkillAlias,leftJoin;skills;SkillsEntity;skillAlias;projectsSkillAlias-skill_id;skillAlias-id
+
+? What is column names that you want to select?
+-> id,projectCode,projectName,projectDescription,startDate,endDate
+
+? What is column names for alias that you want to select?
+-> skillAlias.id,skillAlias.skillName,skillAlias.language
+
+? What is your output param?
+-> ProjectsResponse->statusCode: Int!;message: String;data: ProjectsData;error: String,ProjectsData->data: [ProjectDto];paging: Paging,ProjectDto->id: Int;projectName: String;projectCode: String;projectDescription: String;startDate:Date;endDate:Date;skills: [SkillsDto],SkillsDto->id: Int!;skillName: String!;language: String
+
+? Do you want to skip override module (yes/no)?
+->  no
+
+
+{
+  "pager": {
+    "limit": 2,
+    "page": 1
+  }
+}
+
+
+query getProjects($pager: Pager!){
+  result: getProjects(Pager: $pager){
+    statusCode
+    message
+    data {
+      data {
+        id
+        projectName
+        projectCode
+        projectDescription
+        skills {
+          id
+          skillName
+          language
+        }
+      }
+      paging{
+        limit
+        offset
+        page
+        totalCount
+      }
+    }
+    error
+  }
+}
+
+
+
+
+---------------------------
+5. Delete project
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name ?
+-> projects
+
+? Do you want to import other packages ?
+-> UsersService;../users/users.service,UsersRepository;../../repositories/users.repository,ProjectsSkillsRepository;../../repositories/projects-skills.repository,SkillsRepository;../../repositories/skills.repository
+
+? What is your Api name?
+->  deleteProject
+
+? Do you need check authentication for this (yes/no)?
+-> yes
+
+? What is your alias for other entity? 
+-> userAlias;UsersEntity;../../entities/users.entity,projectsSkillAlias;ProjectsSkillsEntity;../../entities/projects-skills.entity,skillAlias;SkillsEntity;../../entities/skills.entity
+
+? What is your delete info for other table? 
+-> projectsSkillsRepository-{project:{id: id}}
+
+? Do you want to skip override module (yes/no)?
+-> no
+
+
+{
+  "id": 1
+}
+
+mutation deleteProject($id:Int!){
+  deleteProject(id:$id){
+    statusCode
+    message
+    data {
+      result
+    }
+  }
+}
+

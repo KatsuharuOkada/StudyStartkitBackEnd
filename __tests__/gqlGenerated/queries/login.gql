@@ -1,0 +1,18 @@
+query login($input: LoginInput!){
+    login(input: $input){
+        statusCode
+        data{
+            accessToken
+        }
+        error{
+            errorCode
+            message
+            details{
+                message
+                type
+                key
+                value
+            }
+        }
+    }
+}

@@ -1,0 +1,163 @@
+✨ 
+? [PLOP] Please choose a generator. VFA generate E2E code - add. - This is a command for generating e2e code add.
+
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name?  
+->  projects
+
+? What is your Api name?
+->  addProject
+
+? What is your graphql info?
+dependence on input params of API you delcare before, you must type exactly by input format
+->  CreateProjectDto->{"projectName":"test_name","projectCode":"test_code","projectDescription":"test_description","skills":[99,100]}->id,projectCode,projectName,projectDescription,skills-id;skillName;language
+
+? What is your api result?  
+dependence on output params of API you delcare before, you must type exactly by output format
+b/c we expect API success, so the output must be match with input you declare above and match with api ouput format
+->  {"projectName":"test_name","projectCode":"test_code","projectDescription":"test_description","skills":[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"},{"id":100,"skillName":"test_skill_name_2","language":"test_language_2"}]}
+
+? What is your delete function name? 
+->  deleteProjectInfo
+
+? What is your save info for other table? 
+b/c project is relate to onther table is skill table, when you add a project you need data from skill table. so, we need add data for skill table before add project
+->  skills:array-saveSkillInfo-[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"},{"id":100,"skillName":"test_skill_name_2","language":"test_language_2"}]
+
+? What is your delete info for other table? 
+->  deleteProjectSkillInfo-{"project":{"id":id}}<->deleteSkillInfo-[{"id":99},{"id":100}]
+
+? What is your validation parameters for string?  
+->  projectName;{"params":{"projectName":1,"projectCode":"test_code","projectDescription":"test_description","skills":[99,100]}}<->projectCode;{"params":{"projectName":"test_name","projectCode":1,"projectDescription":"test_description","skills":[99,100]}}<->projectDescription;{"params":{"projectName":"test_name","projectCode":"test_code","projectDescription":1,"skills":[99,100]}}
+
+? What is your validation parameters for int? 
+->  skills;{"params":{"projectName":"test_name","projectCode":"test_code","projectDescription":"test_description","skills":["abc"]}}
+
+
+
+✨ 
+? [PLOP] Please choose a generator. VFA generate E2E code - get query one. - This is a command for generating e2e code get query one.
+
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name?  
+->  projects
+
+? What is your Api name? (Ex. getPhoto) 
+->  getProject
+
+? What is your output? 
+->  id,projectCode,projectName,projectDescription,skills-id;skillName;language
+
+
+? What is your save info for preparing data? 
+->  saveProjectInfo-[{"id":1,"projectCode":"test_project_code_1","projectName":"test_project_name_1","projectDescription":"test_description_1","skills":[99,100]}]
+
+? What is your delete function name? 
+ ->  deleteProjectInfo
+
+? What is your save info for other table? 
+->  skills:array-saveSkillInfo-[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"},{"id":100,"skillName":"test_skill_name_2","language":"test_language_2"}]<->projectsSkills:array-saveProjectSkillInfo-[{"id":1,"project":{"id":1},"skill":{"id":99}},{"id":2,"project":{"id":1},"skill":{"id":100}}]
+
+? What is your delete info for other table? 
+->  deleteProjectSkillInfo-[{"id":1},{"id":2}]<->deleteSkillInfo-[{"id":99},{"id":100}]<->deleteProjectInfo-[{"id":1}]
+
+
+
+✨ 
+? [PLOP] Please choose a generator. VFA generate E2E code - update. - This is a command for generating e2e code update.
+
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name ?  
+->  projects
+
+? What is your Api name?  
+->  updateProject
+
+? What is your graphql info? 
+ ->  id:1->UpdateProjectDto->{"projectDescription":"update_test_description","skills":[99]}->id,projectCode,projectName,projectDescription,skills-id;skillName;language
+
+? What is your api result?
+ ->  {"projectName":"test_name","projectCode":"test_code","projectDescription":"update_test_description","skills":[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"}]}
+
+? What is your save info for preparing data? 
+->  saveProjectInfo-[{"id":1,"projectCode":"test_code","projectName":"test_name","projectDescription":"test_description","skills":[99,100]}]
+
+? What is your delete function name? 
+->  deleteProjectInfo
+
+? What is your save info for other table? 
+->  skills:array-saveSkillInfo-[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"},{"id":100,"skillName":"test_skill_name_2","language":"test_language_2"}]<->projectsSkills:array-saveProjectSkillInfo-[{"id":1,"project":{"id":1},"skill":{"id":99}},{"id":2,"project":{"id":1},"skill":{"id":100}}]
+
+? What is your delete info for other table? 
+->  deleteProjectSkillInfo-{"project":{"id":1}}<->deleteSkillInfo-[{"id":99},{"id":100}]
+
+? What is your validation parameters for string? 
+->  projectDescription;{"id":1,"params":{"projectDescription":1,"skills":[99]}}
+
+? What is your validation parameters for int? 
+ ->  skills;{"id":1,"params":{"projectDescription":"test_description","skills":["abc"]}}
+
+
+
+✨ 
+? [PLOP] Please choose a generator. VFA generate E2E code - get query list. - This is a command for generating e2e code get query list.
+
+? What is your name?
+ ->  ThanhLD
+
+? What is your folder name 
+  ->  projects
+
+? What is your Api name? 
+ ->  getProjects
+
+? What is your output? 
+ ->  id,projectCode,projectName,projectDescription,skills-id;skillName;language
+
+? What is your save info for preparing data? 
+->  saveProjectInfo-[{"id":1,"projectCode":"test_project_code_1","projectName":"test_project_name_1","projectDescription":"test_description_1","skills":[99]},{"id":2,"projectCode":"test_project_code_2","projectName":"test_project_name_2","projectDescription":"test_description_2","skills":[99,100]}]
+
+? What is your delete function name?
+ ->  deleteProjectInfo
+
+? What is your save info for other table? 
+->  skills:array-saveSkillInfo-[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"},{"id":100,"skillName":"test_skill_name_2","language":"test_language_2"}]<->projectsSkills:array-saveProjectSkillInfo-[{"id":1,"project":{"id":1},"skill":{"id":99}},{"id":2,"project":{"id":2},"skill":{"id":99}},{"id":3,"project":{"id":2},"skill":{"id":100}}]
+
+? What is your delete info for other table? 
+->  deleteProjectSkillInfo-[{"id":1},{"id":2},{"id":3}]<->deleteSkillInfo-[{"id":99},{"id":100}]<->deleteProjectInfo-[{"id":1},{"id":2}]
+
+
+
+
+
+
+
+✨  
+? [PLOP] Please choose a generator. VFA generate E2E code - delete. - This is a command for generating e2e code delete.
+
+? What is your name? 
+->  ThanhLD
+
+? What is your folder name ?
+  ->  projects
+
+? What is your Api name? 
+ ->  deleteProject
+
+? What is your save info for preparing data? 
+ ->  saveProjectInfo-[{"id":1,"projectCode":"test_project_code_1","projectName":"test_project_name_1","projectDescription":"test_description_1","skills":[99]}]
+
+? What is your save info for other table? 
+->  skills:array-saveSkillInfo-[{"id":99,"skillName":"test_skill_name_1","language":"test_language_1"}]<->projectsSkills:array-saveProjectSkillInfo-[{"id":1,"project":{"id":1},"skill":{"id":99}}]
+
+? What is your delete info for other table? 
+->  deleteSkillInfo-[{"id":99}]
+
+? What is your find function name? 
+->  findOneProject-[{"id":1}]<->findProjectSkill-[{"id":1}]

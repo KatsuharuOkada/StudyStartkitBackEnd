@@ -1,0 +1,13 @@
+  it('Test {{inputName}} not string', async () => {
+    const body = await callGraphQL(
+      app,
+      mutation,
+      HttpStatus.BAD_REQUEST,
+      {{params}},
+      {
+        authorization: 'Bearer ' + loginUserInfo.auth.accessToken,
+      }
+    );
+    // Check return value
+    expectError(body, ['represent a non string value']);
+  });

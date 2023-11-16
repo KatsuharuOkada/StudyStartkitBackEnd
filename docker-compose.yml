@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+  app:
+    image: food-connection-app-image
+    container_name: food-connection-app-container
+    build: .
+    environment:
+      DATABASE_USER_NAME: $RDS_USER
+      DATABASE_PASSWORD: $RDS_PASSWORD
+      NODE_ENV: $NODE_ENV
+    ports:
+      - 3001:3001
+    depends_on:
+      - nginx
+      - redis
+
+  db:
+    build: ./docker
+    image: mysql-image
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: $RDS_ROOT_PASSWORD
+      MYSQL_DATABASE: $RDS_DBNAME
+      MYSQL_USER: $RDS_USER
+      MYSQL_PASSWORD: $RDS_PASSWORD
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  nginx:
+    build: ./docker/nginx
+    image: nginx-image
+    container_name: nginx-container
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    links:
+      - db
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    container_name: elasticsearch-container
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      discovery.type: single-node
+    ports:
+      - 9200:9200
+    depends_on:
+      - db
+
+  redis:
+    container_name: redis-container
+    image: redis
+    ports:
+      - 6379:6379
+    depends_on:
+      - elasticsearch

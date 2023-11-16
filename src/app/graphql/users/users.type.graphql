@@ -1,0 +1,19 @@
+scalar JSON
+
+type Query {
+  getUserInformation(userId: Int): UserQueryResponse
+}
+
+type UserInformation {
+  userId: Int
+  userName: String
+  email: String
+  gender: Int
+}
+
+type UserQueryResponse {
+  statusCode: Int
+  message: String
+  data: UserInformation
+}
+

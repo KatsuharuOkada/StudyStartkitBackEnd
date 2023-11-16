@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+./mysql/
+dist/
+package-lock.json
+yarn-error.log
+/logs
+debug.log
+.config
+.env
+.env.test
+coverage-e2e/
+dump.rdb
+build/

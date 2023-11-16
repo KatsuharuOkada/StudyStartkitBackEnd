@@ -1,0 +1,13 @@
+  it('Test {{inputName}} not number', async () => {
+    const body = await callGraphQL(
+      app,
+      mutation,
+      HttpStatus.BAD_REQUEST,
+      {{params}},
+      {
+        authorization: 'Bearer ' + loginUserInfo.auth.accessToken,
+      }
+    );
+    // Check return value
+    expectError(body, ['cannot represent non-integer']);
+  });

@@ -1,0 +1,66 @@
+version: '3.1'
+
+# This Guideline will show you how to config env
+# https://medium.com/better-programming/using-variables-in-docker-compose-265a604c2006
+
+services:
+  app:
+    image: template-app-image
+    container_name: template-app-container
+    build: .
+    environment:
+      RDS_USER: $RDS_USERNAME
+      RDS_PASSWORD: $RDS_PASSWORD
+      NODE_ENV: $NODE_ENV
+      RDS_DBNAME: $RDS_DATABASE
+    ports:
+      - 3000:3000
+    depends_on:
+      - nginx
+      - redis
+
+  db:
+    build: ./docker
+    image: mysql-image-1
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: $RDS_ROOT_PASSWORD
+      MYSQL_DATABASE: $RDS_DATABASE
+      MYSQL_USER: $RDS_USERNAME
+      MYSQL_PASSWORD: $RDS_PASSWORD
+    ports:
+      - 3306:3306
+    # volumes:
+    #   - ./mysql:/var/lib/mysql
+
+  nginx:
+    build: ./docker/nginx
+    image: nginx-image
+    container_name: nginx-container
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    links:
+      - db
+
+  # Uncomment below block code if you want use service elastic search
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+  #   container_name: elasticsearch-container
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   environment:
+  #     discovery.type: single-node
+  #   ports:
+  #     - 9200:9200
+  #   depends_on:
+  #     - db
+
+  redis:
+    container_name: redis-container
+    image: redis
+    ports:
+      - 6379:6379

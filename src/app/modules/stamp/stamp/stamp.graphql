@@ -1,0 +1,35 @@
+type Query {
+  getUserStamps: UserStampsQueryResponse!
+  getSummary: SummaryQueryResponse!
+}
+
+type Mutation {
+  exchangeStamp(incentiveId: Int!): ExchangeStampMutationResponse!
+}
+
+type Mutation {
+  addStamp(qrCode: String!, userId: String!): MutationResponse
+}
+
+type UserStampsQueryResponse {
+  statusCode: Int
+  data: Int
+  error: Error
+}
+
+type UserSummary {
+  userStampCount: Int!
+  userIncentiveCount: Int!
+}
+
+type SummaryQueryResponse {
+  statusCode: Int!
+  data: UserSummary
+  error: Error
+}
+
+type ExchangeStampMutationResponse {
+  statusCode: Int!
+  data: Int
+  error: Error
+}

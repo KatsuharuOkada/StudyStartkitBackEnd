@@ -1,0 +1,16 @@
+scalar JSON
+scalar Date
+scalar DateTime
+scalar Upload
+
+type Error {
+  errorCode: String!
+  message: String
+  details: [ErrorDetail]!
+}
+type ErrorDetail {
+  message: String
+  type: String
+  key: String
+  value: String
+}

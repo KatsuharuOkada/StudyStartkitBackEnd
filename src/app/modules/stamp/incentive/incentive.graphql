@@ -1,0 +1,23 @@
+type Query {
+  getIncentives: [Incentive]
+}
+
+type Mutation {
+  addIncentive(incentiveInput: IncentiveInput): MutationResponse
+  updateIncentive(incentiveId: Int, incentiveInput: IncentiveInput): MutationResponse
+}
+
+type Incentive {
+  id: Int
+  stampCount: Int
+  description: String
+  status: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input IncentiveInput {
+  stampCount: Int
+  description: String
+  status: Int
+}

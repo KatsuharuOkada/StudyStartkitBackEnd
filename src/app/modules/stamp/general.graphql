@@ -1,0 +1,28 @@
+scalar JSON
+scalar Date
+scalar DateTime
+scalar Upload
+
+enum AddStampReason {
+  INSTALL
+  SCAN
+}
+
+type Error {
+  errorCode: String!
+  message: String
+  details: [ErrorDetail]
+}
+
+type ErrorDetail {
+  message: String
+  type: String
+  key: String
+  value: String
+}
+
+type MutationResponse {
+  statusCode: Int!
+  data: String
+  error: Error
+}

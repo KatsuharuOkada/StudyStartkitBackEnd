@@ -1,0 +1,16 @@
+mutation createUser($createUserInput: CreateUserInput!){
+    createUser(createUserInput: $createUserInput){
+        statusCode
+        data
+        error{
+            errorCode
+            message
+            details{
+                message
+                type
+                key
+                value
+            }
+        }
+    }
+}

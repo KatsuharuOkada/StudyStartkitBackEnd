@@ -1,0 +1,10 @@
+  async {{apiName}}(owner: UsersEntity, params) {
+    try {
+      const {{objEntity}} = new {{upperFirstLetterName}}Entity(params);
+      {{othersUpdateEntity}}
+      const {{result}} = this.{{lowerCaseName}}Repository.create({{objEntity}});
+      return await this.{{lowerCaseName}}Repository.save({{result}});
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }

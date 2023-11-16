@@ -1,0 +1,5 @@
+  @Query('{{apiName}}')
+  async {{apiName}}(@GqlUser() user: UsersEntity, @Args('id') id: number) {
+    const data = await this.{{name}}Service.{{apiName}}(id);
+    return this.response(data);
+  }

@@ -1,0 +1,10 @@
+  async {{apiName}}(id: number, params, user: UsersEntity) {
+    const {{result}} = await this.{{lowerCaseName}}Repository.findOne({
+      where: { id },
+    });
+    if (_.isEmpty({{result}})) {
+      throw new BadRequestException('{{result}} not found.');
+    }
+    this.{{lowerCaseName}}Repository.merge({{result}}, params);
+    return await this.{{lowerCaseName}}Repository.save({{result}});
+  }

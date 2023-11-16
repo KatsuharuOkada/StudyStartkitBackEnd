@@ -1,0 +1,5 @@
+  @Mutation('{{apiName}}')
+  async {{apiName}}(@GqlUser() user: UsersEntity, @Args('params') params) {
+    const data = await this.{{name}}Service.{{apiName}}(user, params);
+    return this.response(data);
+  }

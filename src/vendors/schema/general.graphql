@@ -1,0 +1,43 @@
+scalar JSON
+
+type Error {
+  errorCode: String!
+  message: String
+  details: [ErrorDetail]!
+}
+
+type ErrorDetail {
+  message: String
+  type: String
+  key: String
+  value: String
+}
+
+input Pager {
+  limit: Int!
+  offset: Int
+  page: Int
+  isTakeAll: Boolean
+}
+
+type Paging {
+  limit: Int!
+  offset: Int!
+  page: Int!
+  totalCount: Int!
+  isNext: Boolean
+  isPrev: Boolean
+  orders: JSON
+  filters: JSON
+}
+
+type DeleteResponse {
+  statusCode: Int!
+  message: String
+  data: DeleteResult
+  error: String
+}
+
+type DeleteResult {
+  result: Boolean
+}

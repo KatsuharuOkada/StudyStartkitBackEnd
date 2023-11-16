@@ -1,0 +1,43 @@
+type Query {
+  user: UserInfoResponse
+  users(Pager: Pager!, FilterConditions: JSON, OrderConditions: JSON): UsersResponse
+}
+
+type UserDto {
+  id: Int!
+  email: String!
+  firstName: String
+  lastName: String
+  nickName: String
+  gender: String!
+  birthDate: Date
+  phoneNumber: String
+  gatewayId: String
+  city: CityDto
+}
+
+input CreateUserDto {
+  email: String
+  password: String
+  gender: String
+  userName: String
+}
+
+type UserInfoResponse {
+  statusCode: Int!
+  message: String
+  data: UserDto
+  error: String
+}
+
+type UsersResponse {
+  statusCode: Int!
+  message: String
+  data: UsersData
+  error: String
+}
+
+type UsersData {
+  data: [UserDto]
+  paging: Paging
+}

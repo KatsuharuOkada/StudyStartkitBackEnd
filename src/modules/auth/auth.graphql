@@ -1,0 +1,83 @@
+type Mutation {
+  login(params: LoginDto!): AuthResponse
+  logout: BaseResponse
+  register(RegisterDto: CreateUserDto!): RegisterResponse
+  refreshToken(params: RefreshTokenDto!): RefreshTokenResponse
+  activeAccount(params: ActiveAccountDto!): ActiveAccountResponse
+  verifyCode(params: VerifyCodeDto): VerifyCodeResponse
+  resetPassword(params: ResetPasswordDto!): BaseResponse
+}
+
+input LoginDto {
+  loginId: String!
+  password: String!
+}
+
+type AuthResponse {
+  statusCode: Int!
+  data: AuthDto
+  error: Error
+}
+
+type RegisterResponse {
+  statusCode: Int!
+  message: String
+  data: UserDto
+  error: String
+}
+
+type AuthData {
+  accessToken: String
+  refreshToken: String
+  expired: String
+  tokenType: String
+}
+
+type AuthDto {
+  auth: AuthData
+  user: UserDto
+}
+
+input ActiveAccountDto {
+  email: String!
+}
+
+type ActiveAccountResponse {
+  statusCode: Int!
+  data: VerificationTokenDto
+  error: Error
+}
+
+type VerificationTokenDto {
+  verificationToken: String
+}
+
+input ResetPasswordDto {
+  resetPasswordToken: String!
+  newPassword: String!
+}
+
+input VerifyCodeDto {
+  verificationToken: String
+  verificationCode: String
+}
+
+type VerifyCodeResponse {
+  statusCode: Int!
+  data: SetPaswordTokenDto
+  error: Error
+}
+
+type SetPaswordTokenDto {
+  setPasswordToken: String
+}
+
+input RefreshTokenDto {
+  refreshToken: String!
+}
+
+type RefreshTokenResponse {
+  statusCode: Int!
+  data: AuthData
+  error: Error
+}

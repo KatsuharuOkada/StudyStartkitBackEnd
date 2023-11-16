@@ -1,0 +1,20 @@
+export const ENV_CONFIGS = {
+  NODE_ENV: process.env.NODE_ENV,
+  APP: {
+    JWT_ACCESS_KEY: process.env.APP_JWT_ACCESS_KEY,
+    JWT_REFRESH_KEY: process.env.APP_JWT_REFRESH_KEY,
+    JWT_ACCESS_TOKEN_EXPIRE_TIME: +process.env.APP_JWT_ACCESS_TOKEN_EXPIRE_TIME,
+    JWT_REFRESH_TOKEN_EXPIRE_TIME: +process.env.APP_JWT_REFRESH_TOKEN_EXPIRE_TIME,
+    JWT_CODE_KEY: process.env.APP_JWT_CODE_KEY,
+    JWT_CODE_EXPIRE_TIME: +process.env.APP_JWT_CODE_EXPIRE_TIME,
+    JWT_RESET_PWD_KEY: process.env.APP_JWT_RESET_PWD_KEY,
+    JWT_RESET_PWD_TOKEN_EXPIRE_TIME: +process.env.APP_JWT_RESET_PWD_TOKEN_EXPIRE_TIME,
+    API_KEY: process.env.APP_API_KEY,
+  },
+  DOCTOR: {}, // TODO: Add later
+  ADMIN: {}, // TODO: Add later
+};
+
+export const VERIFICATION_CODE_LENGTH = 4;
+export const SALT_ROUNDS = 10;
+export const PASSWORD_MIN_LENGTH = 8;

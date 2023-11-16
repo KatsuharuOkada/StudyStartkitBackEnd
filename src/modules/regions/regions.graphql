@@ -1,0 +1,5 @@
+type RegionDto {
+  regionId: Int
+  regionName: String
+  postCode: String
+}

@@ -1,0 +1,29 @@
+  {{transaction}}
+  /**
+   * @author: {{devName}}
+   * @date: {{generatedDate}}
+   * Method {{apiName}}
+   * Delete record by id
+   * @param id: number
+   * @param user: UsersEntity
+   * @returns boolean
+   */
+  async {{apiName}}(id: number, user: UsersEntity) {
+    const data = { result: false };
+    const {{result}} = await this.{{lowerCaseName}}Repository.findOne({
+      where: { id },
+    });
+    if (_.isEmpty({{result}})) {
+      throw new BadRequestException('{{result}} not found.');
+    }
+
+    {{deleteOtherTableInfo}}
+    const result = await this.{{lowerCaseName}}Repository.delete({ id });
+    if (result.affected && result.affected > 0) {
+      data.result = true;
+    } else {
+      data.result = false;
+    }
+
+    return data;
+  }

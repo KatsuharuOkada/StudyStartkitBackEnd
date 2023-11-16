@@ -1,0 +1,6 @@
+type CityDto {
+  cityId: Int
+  cityName: String
+  postCode: String
+  region: RegionDto
+}

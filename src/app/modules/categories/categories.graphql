@@ -1,0 +1,20 @@
+type Query {
+  getCategory(categoryId: Int!): CategoryDetail
+}
+type Mutation {
+  createCategory(input: CategoryInput!): MutationResponse
+}
+
+input CategoryInput {
+  categoryName: String!
+  description: String!
+}
+type CategoryDetail {
+  id: Int!
+  name: String
+}
+
+type MutationResponse {
+  statusCode: Int!
+  msg: String
+}

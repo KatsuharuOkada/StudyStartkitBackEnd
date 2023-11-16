@@ -1,0 +1,94 @@
+scalar JSON
+
+type Error {
+  errorCode: String!
+  message: String
+  details: [ErrorDetail]!
+}
+
+type ErrorDetail {
+  message: String
+  type: String
+  key: String
+  value: String
+}
+
+type Query {
+  login(input: LoginInput!): LoginResponse
+  getCategory(categoryId: Int!): CategoryResponse!
+  getUserInformation(userId: Int): UserQueryResponse
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  statusCode: Int!
+  data: Login
+  error: Error
+}
+
+type Login {
+  accessToken: String!
+}
+
+type Mutation {
+  createCategory(input: CategoryInput!): MutationResponse
+  createUser(createUserInput: CreateUserInput!): MutationResponse
+}
+
+input CategoryInput {
+  categoryName: String!
+  description: String!
+}
+
+type Category {
+  categoryId: Int!
+  categoryName: String
+}
+
+type CategoryResponse {
+  statusCode: Int!
+  data: Category
+  error: Error
+}
+
+input CreateUserInput {
+  email: String!
+  fullname: String!
+  gender: GENDER!
+  password: String!
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+}
+
+"User information"
+type UserInformation {
+  userId: Int
+  userName: String
+  email: String
+  gender: String
+}
+
+type UserQueryResponse {
+  statusCode: Int
+  message: String
+  data: UserInformation
+  error: Error
+}
+
+type MutationResponse {
+  statusCode: Int!
+  data: String
+  error: Error
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

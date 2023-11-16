@@ -1,0 +1,23 @@
+query profile{
+    profile{
+        statusCode
+        message
+        data{
+            userId
+            userName
+            email
+            gender
+            fullName
+        }
+        error{
+            errorCode
+            message
+            details{
+                message
+                type
+                key
+                value
+            }
+        }
+    }
+}

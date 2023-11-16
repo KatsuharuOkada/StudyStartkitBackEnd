@@ -1,0 +1,19 @@
+query getCategory($categoryId: Int!){
+    getCategory(categoryId: $categoryId){
+        statusCode
+        data{
+            categoryId
+            categoryName
+        }
+        error{
+            errorCode
+            message
+            details{
+                message
+                type
+                key
+                value
+            }
+        }
+    }
+}

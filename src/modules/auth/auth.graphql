@@ -1,0 +1,36 @@
+type Mutation {
+  login(params: LoginDto!): AuthResponse
+  register(RegisterDto: CreateUserDto!): RegisterResponse
+  refreshToken(refreshToken: String!): AuthResponse
+}
+
+input LoginDto {
+  loginId: String!
+  password: String!
+}
+
+type AuthResponse {
+  statusCode: Int!
+  message: String
+  data: AuthDto
+  error: String
+}
+
+type RegisterResponse {
+  statusCode: Int!
+  message: String
+  data: UserDto
+  error: String
+}
+
+type AuthData {
+  accessToken: String
+  refreshToken: String
+  expired: String
+  tokenType: String
+}
+
+type AuthDto {
+  auth: AuthData
+  user: UserDto
+}

@@ -1,0 +1,22 @@
+query getUserInformation($userId: Int){
+    getUserInformation(userId: $userId){
+        statusCode
+        message
+        data{
+            userId
+            userName
+            email
+            gender
+        }
+        error{
+            errorCode
+            message
+            details{
+                message
+                type
+                key
+                value
+            }
+        }
+    }
+}

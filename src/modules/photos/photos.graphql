@@ -1,0 +1,52 @@
+type Query {
+  getPhoto(id: Int!): PhotoResponse
+  getPhotos(Pager: Pager!, FilterConditions: JSON, OrderConditions: JSON): PhotosResponse
+}
+
+type Mutation {
+  addPhoto(params: CreatePhotoDto!): PhotoResponse
+  updatePhoto(id: Int!, params: UpdatePhotoDto!): PhotoResponse
+  deletePhoto(id: Int!): DeleteResponse
+}
+
+input CreatePhotoDto {
+  url: String!
+  comment: String
+}
+
+input UpdatePhotoDto {
+  comment: String
+}
+
+type PhotoComment {
+  id: Int
+  comment: String
+  owner: UserDto
+}
+
+type PhotoDto {
+  id: Int
+  url: String
+  comment: String
+  owner: UserDto
+  comments: [PhotoComment]
+}
+
+type PhotoResponse {
+  statusCode: Int!
+  message: String
+  data: PhotoDto
+  error: String
+}
+
+type PhotosResponse {
+  statusCode: Int!
+  message: String
+  data: PhotosData
+  error: String
+}
+
+type PhotosData {
+  data: [PhotoDto]
+  paging: Paging
+}
